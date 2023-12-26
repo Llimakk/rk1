@@ -1,0 +1,40 @@
+const readline = require('readline');
+
+const rl = readline.createInterface(
+    {
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.question('Введите первое слово: ', (w1) => {
+  rl.question('Введите второе слово: ', (w2) => {
+    let len1 = w1.length + 1;
+    let len2 = w2.length + 1;
+    let matrix = new Array(len2).fill().map(() => new Array(len1).fill(0));
+
+    for (let i = 0; i < len1; i++) 
+    {
+      matrix[0][i] = i;
+    }
+    for (let j = 0; j < len2; j++) 
+    {
+      matrix[j][0] = j;
+    }
+    for (let i = 0; i < len1 - 1; i++) 
+    {
+      for (let j = 0; j < len2 - 1; j++) 
+      {
+        if (w1[i] !== w2[j]) 
+        {
+          matrix[j + 1][i + 1] = Math.min(matrix[j][i + 1], matrix[j][i], matrix[j + 1][i]) + 1;
+        } 
+        else if (w1[i] === w2[j]) 
+        {
+          matrix[j + 1][i + 1] = Math.min(matrix[j][i + 1], matrix[j][i], matrix[j + 1][i]);
+        }
+      }
+    }
+    console.log('Расстояние Левенштейна =', matrix[len2 - 1][len1 - 1]);
+    rl.close();
+  });
+});
